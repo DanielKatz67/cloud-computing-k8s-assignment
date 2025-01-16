@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stocks-app
+  namespace: stock-portfolio-namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: capital-gains-app
+  template:
+    metadata:
+      labels:
+        app: capital-gains-app
+    spec:
+      containers:
+        - name: stocks-app
+          image: stocks-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              cpu: 200m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
