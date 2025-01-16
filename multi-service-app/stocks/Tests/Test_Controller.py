@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from stock_portfolio_app.controller import StockController
+from stocks.controller import StockController
 SINGLE_MOCK_STOCKS = [
     {
         "_id": "1",
