@@ -112,7 +112,7 @@ def get_capital_gains():
         capital_gains = round(_calculate_capital_gains(filtered_stocks), 2)
         logging.info(f"Calculated total capital gains: {capital_gains}")
 
-        return jsonify({"capital_gains": capital_gains})
+        return jsonify({"capital-gains": capital_gains})
     except Exception as e:
         logging.error(f"Error processing capital gains request: {e}")
         return jsonify({"error": "Internal server error"}), 500
