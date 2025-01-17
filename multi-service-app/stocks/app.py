@@ -17,7 +17,7 @@ def main():
         controller = StockController(stocks_collection)
 
         # Run the Flask app
-        port = int(os.getenv("FLASK_PORT"))
+        port = 8000
         controller.app.run(host='0.0.0.0', port=port)
 
     except Exception as e:

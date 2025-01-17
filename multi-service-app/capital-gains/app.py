@@ -91,6 +91,6 @@ def get_capital_gains():
 
 
 if __name__ == '__main__':
-    port = int(os.getenv("FLASK_PORT", 8080))
+    port = 8080
     logging.info(f"Starting Capital Gain Service on port {port}")
     app.run(host='0.0.0.0', port=port)

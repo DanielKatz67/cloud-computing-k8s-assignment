@@ -6,9 +6,8 @@ metadata:
 spec:
   selector:
     app: database
-  type: NodePort 
+  type: ClusterIP
   ports:
     - protocol: TCP
-      port: 80
+      port: 27017
       targetPort: 27017
-      nodePort: 27017

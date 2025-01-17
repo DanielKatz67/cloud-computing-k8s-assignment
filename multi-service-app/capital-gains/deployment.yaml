@@ -17,7 +17,7 @@ spec:
         - name: capital-gains-app
           image: .
           ports:
-            - containerPort: 5003
+            - containerPort: 5001
           resources:
             requests:
               cpu: 200m
