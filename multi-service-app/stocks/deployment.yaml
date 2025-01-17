@@ -7,11 +7,11 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: capital-gains-app
+      app: stocks-app
   template:
     metadata:
       labels:
-        app: capital-gains-app
+        app: stocks-app
     spec:
       containers:
         - name: stocks-app

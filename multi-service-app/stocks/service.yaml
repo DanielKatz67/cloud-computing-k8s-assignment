@@ -5,7 +5,7 @@ metadata:
   namespace: stock-portfolio-namespace
 spec:
   selector:
-    app: stocks-service
+    app: stocks-app
   type: ClusterIP
   ports:
     - protocol: TCP

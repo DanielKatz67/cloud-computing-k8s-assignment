@@ -4,7 +4,7 @@ metadata:
   name: mongodb
   namespace: stock-portfolio-namespace
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: mongodb

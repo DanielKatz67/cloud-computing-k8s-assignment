@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: stock-portfolio-namespace
+data:
+  nginx.conf: |
+    http {
+      server {
+        listen 80;
+
+        location /stocks/ {
+          proxy_pass http://stocks-service.stock-portfolio-namespace.svc.cluster.local:8080;
+        }
+
+        location /capital-gains/ {
+          proxy_pass http://capital-gains-service.stock-portfolio-namespace.svc.cluster.local:8000;
+        }
+      }
+    }
