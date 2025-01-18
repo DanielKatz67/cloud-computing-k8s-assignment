@@ -5,6 +5,8 @@ metadata:
   namespace: stock-portfolio-namespace
 data:
   nginx.conf: |
+   events {}
+
     http {
       server {
         listen 80;
