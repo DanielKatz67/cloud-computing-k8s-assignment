@@ -12,8 +12,8 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-STOCK_SERVICE_URL = "http://stocks-service/stocks"
-STOCK_SERVICE_VALUE_URL = "http://stocks-service/stock-value"
+STOCK_SERVICE_URL = "http://stocks-service:6000/stocks"
+STOCK_SERVICE_VALUE_URL = "http://stocks-service:6000/stock-value"
 
 def _fetch_stock_data():
     """Fetch stock data from the appropriate service."""
