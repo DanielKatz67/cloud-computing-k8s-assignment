@@ -16,7 +16,7 @@ data:
         }
       
        location /stocks {
-          proxy_pass http://stocks-service:6000;
+          proxy_pass http://stocks-service:6000/stocks;
         }
 
        location /capital-gains {

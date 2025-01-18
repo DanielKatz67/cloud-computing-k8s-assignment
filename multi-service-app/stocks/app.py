@@ -10,9 +10,9 @@ def main():
     Initializes the StockController and runs the Flask app.
     """
     try:
-        client = MongoClient("mongodb://mongodb:27017/")
-        db = client["stock_portfolio"]
-        stocks_collection = db["stock_portfolio"]
+        client = MongoClient("mongodb://mongodb-service:27017/")
+        db = client["stock_portfolio_db"]
+        stocks_collection = db["stock_portfolio_collection"]
 
         controller = StockController(stocks_collection)
 
