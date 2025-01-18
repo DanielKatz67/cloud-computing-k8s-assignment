@@ -12,11 +12,11 @@ data:
         listen 80;
 
         location /stocks/ {
-          proxy_pass http://stocks-service:8000;
+          proxy_pass https://stocks-service:6000;
         }
 
         location /capital-gains/ {
-          proxy_pass http://capital-gains-service:8080;
+          proxy_pass https://capital-gains-service:6001;
         }
       }
     }
