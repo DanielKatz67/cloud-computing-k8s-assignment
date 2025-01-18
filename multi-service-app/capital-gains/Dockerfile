@@ -13,4 +13,4 @@ COPY . .
 EXPOSE 8080
 
 # Run the Flask app
-CMD ["python", "capital_gain.py"]
+CMD ["python", "app.py"]
