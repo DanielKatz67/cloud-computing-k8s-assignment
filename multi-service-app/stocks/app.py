@@ -12,7 +12,7 @@ def main():
     try:
         client = MongoClient("mongodb://mongodb:27017/")
         db = client["stock_portfolio"]
-        stocks_collection = db[os.getenv("MONGO_COLLECTION")]
+        stocks_collection = db["stock_portfolio"]
 
         controller = StockController(stocks_collection)
 
