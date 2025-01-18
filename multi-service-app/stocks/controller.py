@@ -15,7 +15,6 @@ class StockController:
 
     def setup_routes(self):
         # Define the routes and bind them to class methods
-        self.app.route('/', methods=['GET'])(self.root)
         self.app.route('/stocks', methods=['POST'])(self.add_stock)
         self.app.route('/stocks', methods=['GET'])(self.get_stocks)
         self.app.route('/stocks/<string:stock_id>', methods=['GET'])(self.get_stock)
@@ -24,9 +23,6 @@ class StockController:
         self.app.route('/stock-value/<string:stock_id>', methods=['GET'])(self.stock_value)
         self.app.route('/portfolio-value', methods=['GET'])(self.portfolio_value)
         self.app.route('/kill', methods=['GET'])(self.kill_container)
-
-    def root(self):
-        return "Welcome to the Stocks API V2"
 
     def validate_stock_data(self, data, required_fields, check_symbol_exists):
         for field in required_fields:
@@ -116,7 +112,6 @@ class StockController:
         Possible error status codes returned: 500.
         For this assignment, you need to support query strings of the form <field>=<value>.
         """
-        logging.info("Getting inside get_stocks successfully")
         try:
             query_params = request.args.to_dict()
             stocks = self.stock_service.get_stocks(query_params)

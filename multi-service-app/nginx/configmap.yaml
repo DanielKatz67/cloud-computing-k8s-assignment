@@ -9,12 +9,7 @@ data:
 
     http {
       server {
-       listen 80;
-    
-       location / {   
-          proxy_pass http://stocks-service:6000/;
-        }
-      
+       listen 80;   
        location /stocks {
           proxy_pass http://stocks-service:6000/stocks;
         }
