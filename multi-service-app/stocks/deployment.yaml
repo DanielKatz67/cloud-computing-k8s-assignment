@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: stocks-app
-          image: .
+          image: stocks-image
           ports:
             - containerPort: 5000
           resources:
