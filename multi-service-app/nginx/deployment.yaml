@@ -28,7 +28,7 @@ spec:
               memory: 512Mi
           volumeMounts:
             - name: nginx-config
-              mountPath: /etc/nginx/nginx.conf
+              mountPath: /etc/nginx
               subPath: nginx.conf
       volumes:
       - name: nginx-config
