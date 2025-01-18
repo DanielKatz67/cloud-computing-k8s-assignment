@@ -20,7 +20,7 @@ data:
         }
 
        location /capital-gains {
-          proxy_pass http://capital-gains-service:6001;
+          proxy_pass http://capital-gains-service:6001/capital-gains;
         }
       }
     }
