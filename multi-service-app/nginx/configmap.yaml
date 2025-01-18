@@ -9,14 +9,21 @@ data:
 
     http {
       server {
-        listen 80;
-
-        location /stocks {
-          proxy_pass http://stocks-service:6000/stocks;
+       listen 80;
+    
+       location / {   
+          proxy_pass http://stocks-service:6000/;
+        }
+       
+    
+       location /stocks {
+          rewrite ^/stocks(.*)$ /stocks$1 break;   
+          proxy_pass http://stocks-service:6000;
         }
 
-        location /capital-gains {
-          proxy_pass http://capital-gains-service:6001/;
+       location /capital-gains {
+          rewrite ^/capital-gains(.*)$ /capital-gains$1 break;
+          proxy_pass http://capital-gains-service:6001;
         }
       }
     }
