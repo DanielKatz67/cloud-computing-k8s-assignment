@@ -16,6 +16,7 @@ spec:
       containers:
         - name: capital-gains-app
           image: capital-gains-image
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5001
           resources:

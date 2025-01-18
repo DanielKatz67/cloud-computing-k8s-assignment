@@ -16,6 +16,7 @@ spec:
       containers:
         - name: stocks-app
           image: stocks-image
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5000
           resources:
