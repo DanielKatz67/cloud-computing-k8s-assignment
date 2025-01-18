@@ -14,15 +14,12 @@ data:
        location / {   
           proxy_pass http://stocks-service:6000/;
         }
-       
-    
+      
        location /stocks {
-          rewrite ^/stocks(.*)$ /stocks$1 break;   
           proxy_pass http://stocks-service:6000;
         }
 
        location /capital-gains {
-          rewrite ^/capital-gains(.*)$ /capital-gains$1 break;
           proxy_pass http://capital-gains-service:6001;
         }
       }

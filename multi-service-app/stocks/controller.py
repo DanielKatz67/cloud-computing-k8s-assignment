@@ -26,7 +26,7 @@ class StockController:
         self.app.route('/kill', methods=['GET'])(self.kill_container)
 
     def root(self):
-        return "Welcome to the Stocks API"
+        return "Welcome to the Stocks API V2"
 
     def validate_stock_data(self, data, required_fields, check_symbol_exists):
         for field in required_fields:
@@ -116,15 +116,16 @@ class StockController:
         Possible error status codes returned: 500.
         For this assignment, you need to support query strings of the form <field>=<value>.
         """
-        try:
-            query_params = request.args.to_dict()
-            stocks = self.stock_service.get_stocks(query_params)
-
-            # Convert ObjectId to string for JSON serialization
-            for stock in stocks:
-                stock['id'] = str(stock.pop('_id'))
-
-            return jsonify(stocks), 200
+        # try:
+        #     query_params = request.args.to_dict()
+        #     stocks = self.stock_service.get_stocks(query_params)
+        #
+        #     # Convert ObjectId to string for JSON serialization
+        #     for stock in stocks:
+        #         stock['id'] = str(stock.pop('_id'))
+        #
+        #     return jsonify(stocks), 200
+        return "GET STOCKS"
 
         except Exception as e:
             logging.error(f"Error in get_stocks: {str(e)}")
