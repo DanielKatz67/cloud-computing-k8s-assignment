@@ -28,7 +28,7 @@ spec:
               memory: 512Mi
           volumeMounts:
             - name: data-volume
-              mountPath: /data
+              mountPath: /data/db
       volumes:
         - name: data-volume
           persistentVolumeClaim:
