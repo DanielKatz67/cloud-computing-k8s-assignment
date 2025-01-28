@@ -1,15 +1,19 @@
 import logging
 import os
+import time
 from datetime import datetime
 from flask import Flask, request, jsonify
 from service import StockService
+from DistributedLock import DistributedLock
 
 
 class StockController:
-    def __init__(self, stocks_collection):
+    def __init__(self, stocks_collection, locks_delete_update_collection, locks_add_collection):
         self.app = Flask(__name__)
         self.stock_service = StockService(stocks_collection)
         self.setup_routes()
+        self.locks_delete_update = DistributedLock(locks_delete_update_collection)
+        self.locks_add = DistributedLock(locks_add_collection)
 
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -90,6 +94,13 @@ class StockController:
                 return jsonify({'error': 'Expected application/json media type'}), 415
             data = request.get_json()
 
+        except Exception as e:
+            return jsonify({'server error': str(e)}), 500
+
+        if not self.acquire_lock_with_retries(self.locks_add, data['symbol']):
+            return jsonify({"error": "Resource is locked by another operation."}), 409
+
+        try:
             if not self.validate_stock_data(data, ['symbol', 'purchase price', 'shares'], check_symbol_exists=True):
                 return jsonify({'error': 'Malformed data'}), 400
 
@@ -102,9 +113,14 @@ class StockController:
             # note: id is generated in the service layer
             stock = self.stock_service.add_stock(symbol, purchase_price, shares, name, purchase_date)
             stock['id'] = str(stock.pop('_id'))  # Use 'id' for external response
+
             return jsonify(stock), 201
         except Exception as e:
             return jsonify({'server error': str(e)}), 500
+
+        finally:
+            self.locks_add.release_lock(data['symbol'])
+            logging.info(f"Lock released for stock '{data['symbol']}'.")
 
     def get_stocks(self):
         """
@@ -138,6 +154,9 @@ class StockController:
             return jsonify({'server error': str(e)}), 500
 
     def remove_stock(self, stock_id):
+        if not self.acquire_lock_with_retries(self.locks_delete_update, stock_id):
+            return jsonify({"error": "Resource is locked by another operation."}), 409
+
         try:
             self.stock_service.delete_stock(stock_id)
             return '', 204
@@ -148,7 +167,14 @@ class StockController:
             logging.error(f"Error in remove_stock: {str(e)}")
             return jsonify({'server error': str(e)}), 500
 
+        finally:
+            self.locks_delete_update.release_lock(stock_id)
+            logging.info(f"Lock released for stock '{stock_id}'.")
+
     def update_stock(self, stock_id):
+        if not self.acquire_lock_with_retries(self.locks_delete_update, stock_id):
+            return jsonify({"error": "Resource is locked by another operation."}), 409
+
         try:
             content_type = request.headers.get('Content-Type')
             if content_type != 'application/json':
@@ -191,6 +217,10 @@ class StockController:
         except Exception as e:
             logging.error(f"Exception in update_stock: {str(e)}")
             return jsonify({"server error": str(e)}), 500
+
+        finally:
+            self.locks_delete_update.release_lock(stock_id)
+            logging.info(f"Lock released for stock '{stock_id}'.")
 
     def stock_value(self, stock_id):
         """
@@ -246,3 +276,21 @@ class StockController:
     @staticmethod
     def kill_container():
         os._exit(1)
+
+    @staticmethod
+    def acquire_lock_with_retries(locks, resource, max_retries=4, retry_delay=2):
+        """
+        Tries to acquire a lock for the specified resource with retries.
+        """
+        for attempt in range(max_retries):
+            lock_acquired = locks.acquire_lock(resource)
+            if lock_acquired:
+                logging.info(f"Lock acquired for resource '{resource}' on attempt {attempt + 1}.")
+                return True
+            else:
+                logging.warning(
+                    f"Lock attempt {attempt + 1} failed for resource '{resource}'. Retrying in {retry_delay} seconds...")
+                time.sleep(retry_delay)
+
+        logging.warning(f"Failed to acquire lock for resource '{resource}' after {max_retries} attempts.")
+        return False
