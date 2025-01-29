@@ -10,12 +10,20 @@ data:
     http {
       server {
        listen 80;   
-       location /stocks {
-          proxy_pass http://stocks-service:6000/stocks;
-        }
+         location /stocks {
+            proxy_pass http://stocks-service:6000/stocks;
+         }
+    
+         location /stock-value {
+            proxy_pass http://stocks-service:6000/stock-value;
+         }
+      
+         location /portfolio-value {
+            proxy_pass http://stocks-service:6000/portfolio-value;
+         }
 
-       location /capital-gains {
-          proxy_pass http://capital-gains-service:6001/capital-gains;
-        }
+         location /capital-gains {
+            proxy_pass http://capital-gains-service:6001/capital-gains;
+         }
       }
     }
