@@ -158,7 +158,10 @@ class StockController:
             return jsonify({"error": "Resource is locked by another operation."}), 409
 
         try:
-            self.stock_service.delete_stock(stock_id)
+            deleted_count = self.stock_service.delete_stock(stock_id)
+            if deleted_count == 0:
+                logging.error(f"DELETE request error: Stock with id '{stock_id}' not found.")
+                return jsonify({"error": "Not found"}), 404
             return '', 204
         except KeyError:
             logging.error(f"DELETE request error: Stock with id '{stock_id}' not found.")
