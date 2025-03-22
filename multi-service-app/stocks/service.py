@@ -4,7 +4,7 @@ import requests
 from requests import RequestException
 from bson import ObjectId
 
-NINJA_API_KEY = "t7kGKURsW31xlUX9jhmX6Q==JKxHUYND1othy0fC"
+NINJA_API_KEY = # TODO: ENTER YOUR KEY
 API_URL = 'https://api.api-ninjas.com/v1/stockprice?ticker={}'
 
 
